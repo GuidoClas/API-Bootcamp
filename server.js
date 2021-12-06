@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const logger = require('./middleware/logger');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 // Load env variables
 dotenv.config({path: './config/config.env'});
@@ -19,12 +20,16 @@ const app = express();
 // Express body parser
 app.use(express.json());
 
+// Middleware for logging
 app.use(logger)
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
 
-const PORT= process.env.PORT || 5000;
+//Error middleware
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
     PORT, 
